@@ -1,0 +1,18 @@
+## Build
+build/
+DerivedData/
+
+# Settings
+*.pbxuser
+xcshareddata/
+xcuserdata/
+
+## Other
+.DS_Store
+
+*.pbxproj
+
+# Swift Package Manager
+# Packages/
+# Package.pins
+.build/
