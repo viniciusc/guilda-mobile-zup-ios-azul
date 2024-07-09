@@ -16,3 +16,6 @@ xcuserdata/
 # Packages/
 # Package.pins
 .build/
+
+## Keys
+ApiKeys.plist

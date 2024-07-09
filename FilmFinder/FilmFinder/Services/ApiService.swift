@@ -8,10 +8,23 @@
 import Foundation
 
 class ApiService {
-    private let apiKey = "YOUR_API_KEY" // Substitua pelo seu API Key do TMDb
+    
+    private let apiKey: String? = {
+        do {
+            if let path = Bundle.main.path(forResource: "ApiKeys", ofType: "plist"),
+               let data = FileManager.default.contents(atPath: path) {
+                let dict = try PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any]
+                return dict?["API_KEY"] as? String
+            }
+        } catch {
+            print("Error reading plist file: \(error)")
+        }
+        return nil
+    }()
 
     func fetchMovies(completion: @escaping (Result<[Movie], Error>) -> Void) {
-        guard let url = URL(string: "https://api.themoviedb.org/3/movie/popular?api_key=\(apiKey)&language=en-US&page=1") else {
+        guard let apiKey = apiKey,
+            let url = URL(string: "https://api.themoviedb.org/3/movie/popular?api_key=\(apiKey)&language=en-US&page=1") else {
             return
         }
         
