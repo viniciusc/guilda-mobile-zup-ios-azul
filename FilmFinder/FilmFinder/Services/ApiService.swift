@@ -9,7 +9,8 @@ import Foundation
 
 class ApiService {
     
-    private let apiKey: String? = {
+    // Função para ler a chave da API do arquivo plist
+    private func getApiKey() -> String? {
         do {
             if let path = Bundle.main.path(forResource: "ApiKeys", ofType: "plist"),
                let data = FileManager.default.contents(atPath: path) {
@@ -20,11 +21,22 @@ class ApiService {
             print("Error reading plist file: \(error)")
         }
         return nil
+    }
+    
+    // Propriedade para armazenar a chave da API
+    private lazy var apiKey: String? = {
+        return getApiKey()
     }()
-
+    
+    // Função para buscar filmes
     func fetchMovies(completion: @escaping (Result<[Movie], Error>) -> Void) {
-        guard let apiKey = apiKey,
-            let url = URL(string: "https://api.themoviedb.org/3/movie/popular?api_key=\(apiKey)&language=en-US&page=1") else {
+        guard let apiKey = apiKey else {
+            print("API Key is missing")
+            return
+        }
+        
+        guard let url = URL(string: "https://api.themoviedb.org/3/movie/popular?api_key=\(apiKey)&language=en-US&page=1") else {
+            print("Invalid URL")
             return
         }
         
@@ -35,6 +47,7 @@ class ApiService {
             }
             
             guard let data = data else {
+                print("No data received")
                 return
             }
             
