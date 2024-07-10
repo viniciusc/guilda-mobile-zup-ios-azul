@@ -59,4 +59,24 @@ class ApiService {
             }
         }.resume()
     }
+    
+    func fetchImage(for path: String, completion: @escaping (Result<Data, Error>) -> Void) {
+        let baseUrl = "https://image.tmdb.org/t/p/w500"
+        guard let url = URL(string: "\(baseUrl)\(path)") else {
+            return
+        }
+
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let data = data else {
+                return
+            }
+
+            completion(.success(data))
+        }.resume()
+    }
 }

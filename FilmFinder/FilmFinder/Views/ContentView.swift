@@ -9,26 +9,20 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var viewModel = MovieViewModel()
+    private let apiService = ApiService()
 
     var body: some View {
         NavigationView {
             List(viewModel.movies) { movie in
                 HStack {
                     if let posterPath = movie.posterPath {
-                        AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w500\(posterPath)")) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 100, height: 150)
-                        } placeholder: {
-                            ProgressView()
-                        }
+                        ImageView(posterPath: posterPath)
+                            .frame(width: 100, height: 150)
                     } else {
                         Rectangle()
                             .fill(Color.gray)
                             .frame(width: 100, height: 150)
                     }
-
                     VStack(alignment: .leading) {
                         Text(movie.title)
                             .font(.headline)
