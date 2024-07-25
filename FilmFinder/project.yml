@@ -1,0 +1,25 @@
+name: FilmFinder
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: '15.0'
+  schemeAutogenerationMode: shared
+targets:
+  FilmFinder:
+    type: application
+    platform: iOS
+    sources: [FilmFinder]
+    resources: [Resources]
+    settings:
+      base:
+        SWIFT_VERSION: '5.0'
+        INFOPLIST_FILE: Config/Info.plist
+  FilmFinderTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [FilmFinderTests]
+    settings:
+      base:
+        INFOPLIST_FILE: Config/Info.plist
+    dependencies:
+      - target: FilmFinder
